@@ -1,6 +1,5 @@
 package service;
 
-import algorithm.BoyerMoore;
 import algorithm.LevenshteinDistance;
 import index.InvertedIndex;
 import index.Trie;
@@ -10,10 +9,9 @@ import model.SearchResult;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Smart Search Engine that combines multiple search algorithms
- * into a unified intelligent system with ranking and relevance scoring
- */
+// Smart Search Engine комбинирует несколько алгоритмов поиска
+// в единую интеллектуальную систему с ранжированием и оценкой релевантности
+
 public class SmartSearchEngine {
     private InvertedIndex invertedIndex;
     private Trie trie;
@@ -21,7 +19,7 @@ public class SmartSearchEngine {
     private SearchCore searchCore;
     private QueryAnalyzer queryAnalyzer;
     
-    // Configuration parameters
+    // Параметры конфигурации
     private static final int MAX_FUZZY_DISTANCE = 2;
     private static final double EXACT_MATCH_BOOST = 2.0;
     private static final double PHRASE_MATCH_BOOST = 1.5;
@@ -36,9 +34,9 @@ public class SmartSearchEngine {
         this.queryAnalyzer = new QueryAnalyzer();
     }
 
-    /**
-     * Main search method that intelligently combines multiple algorithms
-     */
+
+     // Основной метод поиска, который комбинирует несколько алгоритмов
+     
     public List<SearchResult> smartSearch(String query) {
         if (query == null || query.trim().isEmpty()) {
             return new ArrayList<>();
@@ -47,7 +45,7 @@ public class SmartSearchEngine {
         QueryIntent intent = queryAnalyzer.analyzeQuery(query);
         Map<Product, Double> relevanceScores = new HashMap<>();
         
-        // Apply different search strategies based on query analysis
+        // Применение различных стратегий поиска на основе анализа запроса
         if (intent.isExactPhrase()) {
             addPhraseSearchResults(query, relevanceScores, PHRASE_MATCH_BOOST);
         }
@@ -60,10 +58,10 @@ public class SmartSearchEngine {
             addFuzzySearchResults(query, relevanceScores, FUZZY_MATCH_PENALTY);
         }
         
-        // Add exact matches with highest boost
+        // Добавление точных совпадений с наибольшим бустом
         addExactMatchResults(query, relevanceScores, EXACT_MATCH_BOOST);
         
-        // Convert to SearchResult objects and sort by relevance
+        // Преобразование в объекты SearchResult и сортировка по релевантности
         return relevanceScores.entrySet().stream()
                 .map(entry -> new SearchResult(entry.getKey(), entry.getValue()))
                 .sorted((a, b) -> Double.compare(b.getRelevanceScore(), a.getRelevanceScore()))
@@ -71,9 +69,9 @@ public class SmartSearchEngine {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Provides intelligent search suggestions with autocomplete
-     */
+    
+     // Предоставляет предложения поиска с автодополнением
+     
     public List<String> getSearchSuggestions(String prefix) {
         if (prefix == null || prefix.trim().isEmpty()) {
             return new ArrayList<>();
@@ -81,7 +79,7 @@ public class SmartSearchEngine {
         
         List<String> suggestions = trie.autocomplete(prefix.toLowerCase());
         
-        // Enhance suggestions with smart recommendations
+        // Улучшение предложений с помощью поиска с опечатками
         if (suggestions.size() < 5) {
             suggestions.addAll(getFuzzyAutocompleteSuggestions(prefix));
         }
@@ -98,7 +96,7 @@ public class SmartSearchEngine {
             double score = 0.0;
             
             if (product.getName().toLowerCase().contains(queryLower)) {
-                score += boost * 2; // Name matches are more important
+                score += boost * 2; // Совпадения в имени более важны
             }
             if (product.getDescription().toLowerCase().contains(queryLower)) {
                 score += boost;
@@ -144,7 +142,7 @@ public class SmartSearchEngine {
         
         for (String word : queryWords) {
             if (product.getName().toLowerCase().contains(word)) {
-                relevance += 2.0; // Name matches are more valuable
+                relevance += 2.0; // Совпадения в имени более ценны
                 matchedWords++;
             }
             if (product.getDescription().toLowerCase().contains(word)) {
@@ -157,7 +155,7 @@ public class SmartSearchEngine {
             }
         }
         
-        // Boost if multiple words match
+        // Буст, если несколько слов совпадают
         if (matchedWords > 1) {
             relevance *= (1.0 + 0.2 * matchedWords);
         }
@@ -172,17 +170,17 @@ public class SmartSearchEngine {
         for (String queryWord : queryWords) {
             double bestMatch = 0.0;
             
-            // Check against product name words
+            // Проверка на совпадения со словами в имени продукта
             String[] nameWords = product.getName().toLowerCase().split("\\W+");
             for (String nameWord : nameWords) {
                 int distance = LevenshteinDistance.calculate(queryWord, nameWord);
                 if (distance <= MAX_FUZZY_DISTANCE) {
                     double similarity = 1.0 - (double) distance / Math.max(queryWord.length(), nameWord.length());
-                    bestMatch = Math.max(bestMatch, similarity * 2.0); // Name matches are more valuable
+                    bestMatch = Math.max(bestMatch, similarity * 2.0); // Совпадения в имени более ценны
                 }
             }
             
-            // Check against description words
+            // Проверка на совпадения со словами в описании продукта
             String[] descWords = product.getDescription().toLowerCase().split("\\W+");
             for (String descWord : descWords) {
                 int distance = LevenshteinDistance.calculate(queryWord, descWord);
@@ -201,7 +199,7 @@ public class SmartSearchEngine {
     private List<String> getFuzzyAutocompleteSuggestions(String prefix) {
         Set<String> suggestions = new HashSet<>();
         
-        // Get all words from product data
+        // Получение всех слов из данных продукта
         for (Product product : dataManager.getAllProducts().values()) {
             String[] words = (product.getName() + " " + product.getDescription() + " " + product.getCategory())
                     .toLowerCase().split("\\W+");
@@ -217,9 +215,9 @@ public class SmartSearchEngine {
         return new ArrayList<>(suggestions);
     }
 
-    /**
-     * Get search statistics and analytics
-     */
+    
+     // Получение статистики и аналитики поиска для отладки
+     
     public SearchAnalytics getSearchAnalytics(String query) {
         QueryIntent intent = queryAnalyzer.analyzeQuery(query);
         

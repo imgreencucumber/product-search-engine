@@ -6,6 +6,8 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Тесты для инвертированного индекса
+
 public class InvertedIndexTest {
     private InvertedIndex index;
 

@@ -7,6 +7,8 @@ import model.Product;
 
 import java.util.Collection;
 
+// Индексирует продукты для поиска по ключевым словам и автодополнению
+
 public class Indexer {
     private InvertedIndex invertedIndex;
     private Trie trie;
@@ -18,12 +20,12 @@ public class Indexer {
 
     public void indexProducts(Collection<Product> products) {
         for (Product product : products) {
-            // Index for keyword search
+            // Индексирование для поиска по ключевым словам
             invertedIndex.addDocument(product.getName(), product.getId());
             invertedIndex.addDocument(product.getDescription(), product.getId());
             invertedIndex.addDocument(product.getCategory(), product.getId());
 
-            // Index for autocomplete
+            // Индексирование для автодополнения
             String[] nameWords = product.getName().toLowerCase().split("\\W+");
             for (String word : nameWords) {
                 if (!word.isEmpty()) {

@@ -10,9 +10,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for Smart Search Engine
- */
+// Тесты для SmartSearchEngine
+
 public class SmartSearchEngineTest {
     
     private SmartSearchEngine smartSearchEngine;
@@ -20,19 +19,19 @@ public class SmartSearchEngineTest {
     
     @BeforeEach
     void setUp() {
-        // Initialize components
+        // Инициализация компонентов
         InvertedIndex invertedIndex = new InvertedIndex();
         Trie trie = new Trie();
         dataManager = new DataManager();
         Indexer indexer = new Indexer(invertedIndex, trie);
         
-        // Add test data
+        // Добавление тестовых данных
         addTestData();
         
-        // Index the data
+        // Индексация данных
         indexer.indexProducts(dataManager.getAllProducts().values());
         
-        // Initialize smart search engine
+        // Инициализация smart search engine
         smartSearchEngine = new SmartSearchEngine(invertedIndex, trie, dataManager);
     }
     
@@ -75,7 +74,7 @@ public class SmartSearchEngineTest {
     
     @Test
     void testSmartSearchFuzzySearch() {
-        // Test with typo - "Smasung" instead of "Samsung"
+        // Тест с опечаткой - "Smasung" вместо "Samsung"
         List<SearchResult> results = smartSearchEngine.smartSearch("Smasung");
         
         assertFalse(results.isEmpty(), "Should find Samsung products despite typo");
@@ -96,10 +95,10 @@ public class SmartSearchEngineTest {
     void testRelevanceScoring() {
         List<SearchResult> results = smartSearchEngine.smartSearch("Apple");
         
-        // Should find multiple Apple products
+        // Должны найти несколько продуктов Apple
         assertTrue(results.size() > 1, "Should find multiple Apple products");
         
-        // Results should be sorted by relevance (descending)
+        // Результаты должны быть отсортированы по релевантности (убывающий порядок)
         for (int i = 0; i < results.size() - 1; i++) {
             assertTrue(results.get(i).getRelevanceScore() >= results.get(i + 1).getRelevanceScore(),
                       "Results should be sorted by relevance score (descending)");
@@ -131,7 +130,7 @@ public class SmartSearchEngineTest {
         
         assertFalse(results.isEmpty(), "Should find results for complex query");
         
-        // Should prioritize products that match multiple terms
+        // Выше приоритет продуктов, которые соответствуют нескольким терминам
         SearchResult topResult = results.get(0);
         String topProductText = (topResult.getProduct().getName() + " " + 
                                topResult.getProduct().getDescription()).toLowerCase();

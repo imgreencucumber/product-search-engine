@@ -1,8 +1,7 @@
 package model;
 
-/**
- * Represents a search result with relevance scoring
- */
+// Представляет результат поиска с оценкой релевантности
+
 public class SearchResult {
     private final Product product;
     private final double relevanceScore;
@@ -47,10 +46,10 @@ public class SearchResult {
     }
     
     /**
-     * Get relevance percentage (0-100%)
+     * Получение процента релевантности (0-100%)
      */
     public int getRelevancePercentage() {
-        // Normalize score to percentage (assuming max score of 10)
+        // Нормализация оценки до процентов
         return Math.min(100, (int) (relevanceScore * 10));
     }
     

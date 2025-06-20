@@ -1,6 +1,8 @@
 
 package algorithm;
 
+// Реализация алгоритма Левенштейна для вычисления расстояния между двумя строками
+
 public class LevenshteinDistance {
 
     public static int calculate(String s1, String s2) {

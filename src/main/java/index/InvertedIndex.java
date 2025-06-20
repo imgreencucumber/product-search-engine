@@ -1,12 +1,12 @@
 
 package index;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
+
+// Реализация инвертированного индекса для поиска по ключевым словам
 
 public class InvertedIndex {
     private Map<String, Set<Integer>> index;
@@ -35,7 +35,7 @@ public class InvertedIndex {
             if (!word.isEmpty()) {
                 Set<Integer> documents = index.get(word);
                 if (documents == null) {
-                    return new HashSet<>(); // If any word is not found, no intersection possible
+                    return new HashSet<>(); // Если какое-либо слово не найдено, пересечение невозможно, возвращаем пустое множество
                 }
                 if (result == null) {
                     result = new HashSet<>(documents);

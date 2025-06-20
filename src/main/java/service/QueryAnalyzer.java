@@ -3,14 +3,13 @@ package service;
 import java.util.*;
 import java.util.regex.Pattern;
 
-/**
- * Analyzes user queries to determine search intent and strategy
- */
+
+// Анализирует запросы пользователей для определения намерения и стратегии поиска
+
 public class QueryAnalyzer {
     
-    // Common patterns for different query types
+    // Общие шаблоны для различных типов запросов
     private static final Pattern QUOTED_PHRASE = Pattern.compile("\"([^\"]+)\"");
-    private static final Pattern SPECIAL_CHARS = Pattern.compile("[!@#$%^&*()+={}\\[\\]:;\"'<>,.?/\\\\|`~]");
     private static final Set<String> STOP_WORDS = new HashSet<>(Arrays.asList(
         "и", "в", "на", "с", "для", "от", "до", "по", "за", "из", "к", "о", "об", "про",
         "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of", "with"
@@ -23,16 +22,16 @@ public class QueryAnalyzer {
         
         String cleanQuery = query.trim().toLowerCase();
         
-        // Check for quoted phrases
+        // Проверка на цитированные фразы
         boolean isExactPhrase = QUOTED_PHRASE.matcher(query).find();
         
-        // Check if query has meaningful keywords
+        // Проверка, есть ли в запросе значимые слова
         boolean hasKeywords = hasValidKeywords(cleanQuery);
         
-        // Determine if fuzzy search is beneficial
+        // Определение, является ли нечеткий поиск полезным
         boolean allowsFuzzySearch = shouldUseFuzzySearch(cleanQuery);
         
-        // Determine query type
+        // Определение типа запроса
         QueryType queryType = determineQueryType(cleanQuery, isExactPhrase);
         
         return new QueryIntent(isExactPhrase, hasKeywords, allowsFuzzySearch, queryType);
@@ -51,12 +50,12 @@ public class QueryAnalyzer {
     private boolean shouldUseFuzzySearch(String query) {
         String[] words = query.split("\\W+");
         
-        // Use fuzzy search for short queries or single words
+        // Использование нечеткого поиска для коротких запросов или одиночных слов
         if (words.length <= 2) {
             return true;
         }
         
-        // Use fuzzy search if query contains potential typos (repeated chars, uncommon patterns)
+        // Использование нечеткого поиска, если запрос содержит потенциальные опечатки (повторяющиеся символы, нетипичные шаблоны)
         for (String word : words) {
             if (word.length() > 3 && hasRepeatedChars(word)) {
                 return true;
@@ -92,9 +91,9 @@ public class QueryAnalyzer {
     }
 }
 
-/**
- * Represents the intent and characteristics of a search query
- */
+
+// Представляет намерение пользователя и характеристики запроса поиска
+
 class QueryIntent {
     private final boolean exactPhrase;
     private final boolean hasKeywords;
@@ -120,9 +119,8 @@ class QueryIntent {
     }
 }
 
-/**
- * Enum representing different types of search queries
- */
+// Enum представляющий различные типы запросов поиска
+
 enum QueryType {
     EMPTY,
     SINGLE_KEYWORD,

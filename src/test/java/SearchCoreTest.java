@@ -11,6 +11,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Тесты для SearchCore
+
 public class SearchCoreTest {
     private SearchCore searchCore;
     private DataManager dataManager;
@@ -22,12 +24,12 @@ public class SearchCoreTest {
         dataManager = new DataManager();
         Indexer indexer = new Indexer(invertedIndex, trie);
 
-        // Add test data
+        // Добавление тестовых данных
         dataManager.addProduct(new Product(1, "iPhone 14", "Apple smartphone with great camera", "Electronics"));
         dataManager.addProduct(new Product(2, "Samsung Galaxy", "Android smartphone with AMOLED display", "Electronics"));
         dataManager.addProduct(new Product(3, "MacBook Pro", "Apple laptop with M2 processor", "Computers"));
 
-        // Index the data
+        // Индексация данных
         indexer.indexProducts(dataManager.getAllProducts().values());
 
         searchCore = new SearchCore(invertedIndex, trie, dataManager);
@@ -57,12 +59,12 @@ public class SearchCoreTest {
 
     @Test
     public void testFuzzySearch() {
-        // Test with exact match first
+        // Тест с точным совпадением
         List<Product> results = searchCore.fuzzySearch("iPhone", 0);
         assertEquals(1, results.size());
         assertEquals("iPhone 14", results.get(0).getName());
         
-        // Test with typo - "iphone" vs "iPhone 14" should match with distance 2
+        // Тест с опечаткой - "iphone" vs "iPhone 14" должно совпадать с расстоянием 2
         results = searchCore.fuzzySearch("iphone", 2);
         assertEquals(1, results.size());
     }

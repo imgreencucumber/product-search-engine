@@ -11,7 +11,6 @@ import service.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -19,16 +18,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Production-ready Smart Product Search Engine Application
- * 
- * Features:
- * - Advanced search algorithms (Inverted Index, Boyer-Moore, Levenshtein Distance, Trie)
- * - RESTful API endpoints
- * - Real-time autocomplete
- * - Modern web interface
- * - JSON-based product data
- */
+// Основное приложение для запуска поискового движка
+
 public class ProductSearchEngineApp {
     private SmartSearchEngine smartSearchEngine;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -47,50 +38,50 @@ public class ProductSearchEngineApp {
     }
 
     private void initializeSystem() {
-        System.out.println("🚀 Initializing Web Search Engine...");
+        System.out.println("Initializing Web Search Engine...");
         
-        // Initialize components
+        // Инициализация компонентов
         InvertedIndex invertedIndex = new InvertedIndex();
         Trie trie = new Trie();
         DataManager dataManager = new DataManager();
         Indexer indexer = new Indexer(invertedIndex, trie);
         
-        // Load products from JSON
+        // Загрузка продуктов из JSON
         List<Product> products = ProductLoader.loadProductsFromJson(PRODUCTS_FILE);
-        System.out.println("📦 Loaded " + products.size() + " products from JSON");
+        System.out.println("Loaded " + products.size() + " products from JSON");
         
-        // Add products to data manager
+        // Добавление продуктов в менеджер данных
         for (Product product : products) {
             dataManager.addProduct(product);
         }
         
-        // Index the data
+        // Индексация данных
         indexer.indexProducts(dataManager.getAllProducts().values());
         
-        // Initialize smart search engine
+        // Инициализация smart search engine
         smartSearchEngine = new SmartSearchEngine(invertedIndex, trie, dataManager);
         
-        System.out.println("✅ Web Search Engine initialized successfully!");
-        System.out.println("📊 Indexed " + dataManager.getAllProducts().size() + " products");
+        System.out.println("Web Search Engine initialized successfully!");
+        System.out.println("Indexed " + dataManager.getAllProducts().size() + " products");
     }
 
     public void start() throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         
-        // Serve static HTML page
+        // Главная страница
         server.createContext("/", new StaticHandler());
         
-        // API endpoint for search
+        // API endpoint для поиска
         server.createContext("/api/search", new SearchHandler());
         
-        // API endpoint for autocomplete
+        // API endpoint для автодополнения
         server.createContext("/api/autocomplete", new AutocompleteHandler());
         
         server.setExecutor(null);
         server.start();
         
-        System.out.println("🌐 Web server started at http://localhost:" + port);
-        System.out.println("🔍 Search engine is ready for queries!");
+        System.out.println("Web server started at http://localhost:" + port);
+        System.out.println("Search engine is ready for queries!");
     }
 
     class StaticHandler implements HttpHandler {
@@ -110,7 +101,7 @@ public class ProductSearchEngineApp {
     class AutocompleteHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            // Enable CORS
+            // Включение CORS
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type");
@@ -132,7 +123,7 @@ public class ProductSearchEngineApp {
 
             List<String> suggestions = smartSearchEngine.getSearchSuggestions(query);
             
-            // Convert suggestions to JSON
+            // Преобразование предложений в JSON
             String jsonResponse = objectMapper.writeValueAsString(suggestions);
             
             exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
@@ -147,7 +138,7 @@ public class ProductSearchEngineApp {
     class SearchHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            // Enable CORS
+            // Включение CORS
             exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
             exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type");
@@ -169,7 +160,7 @@ public class ProductSearchEngineApp {
 
             List<SearchResult> results = smartSearchEngine.smartSearch(query);
             
-            // Convert results to JSON
+            // Преобразование результатов в JSON
             String jsonResponse = objectMapper.writeValueAsString(results);
             
             exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
@@ -191,7 +182,7 @@ public class ProductSearchEngineApp {
                         result.put(URLDecoder.decode(pair[0], StandardCharsets.UTF_8.name()),
                                  URLDecoder.decode(pair[1], StandardCharsets.UTF_8.name()));
                     } catch (Exception e) {
-                        // Skip malformed parameters
+                        // Пропустить неправильные параметры
                     }
                 }
             }
@@ -649,7 +640,7 @@ public class ProductSearchEngineApp {
         try {
             int port = DEFAULT_PORT;
             
-            // Allow port configuration via command line argument
+            // Конфигурация порта через аргумент командной строки
             if (args.length > 0) {
                 try {
                     port = Integer.parseInt(args[0]);
@@ -661,18 +652,16 @@ public class ProductSearchEngineApp {
             ProductSearchEngineApp app = new ProductSearchEngineApp(port);
             app.start();
             
-            // Keep the server running
-            System.out.println("📱 API endpoints:");
+            System.out.println("API endpoints:");
             System.out.println("   - GET /                     - Web interface");
             System.out.println("   - GET /api/search?q=query   - Search products");
             System.out.println("   - GET /api/autocomplete?q=  - Autocomplete suggestions");
-            System.out.println("\n⏹️  Press Ctrl+C to stop the server");
+            System.out.println("\nPress Ctrl+C to stop the server");
             
-            // Keep the application running
             Thread.currentThread().join();
             
         } catch (Exception e) {
-            System.err.println("❌ Error starting search engine: " + e.getMessage());
+            System.err.println("Error starting search engine: " + e.getMessage());
             e.printStackTrace();
             System.exit(1);
         }

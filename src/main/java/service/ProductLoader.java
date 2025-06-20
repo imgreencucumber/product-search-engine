@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+// Загружает продукты из JSON-файла
+
 public class ProductLoader {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 

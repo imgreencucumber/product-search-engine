@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Реализация Trie-дерева для автодополнения
+
 public class Trie {
     private TrieNode root;
 
@@ -28,7 +30,7 @@ public class Trie {
         for (char ch : prefix.toCharArray()) {
             current = current.children.get(ch);
             if (current == null) {
-                return results; // No words with this prefix
+                return results; // Нет слов с этим префиксом
             }
         }
         findAllWords(current, prefix, results);

@@ -6,6 +6,8 @@ import model.Product;
 import java.util.HashMap;
 import java.util.Map;
 
+// Управляет данными о продуктах
+
 public class DataManager {
     private Map<Integer, Product> products;
 

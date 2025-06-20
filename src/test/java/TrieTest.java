@@ -6,6 +6,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Тесты для Trie-дерева
+
 public class TrieTest {
     private Trie trie;
 
@@ -44,8 +46,8 @@ public class TrieTest {
 
         List<String> results = trie.autocomplete("apple");
         assertTrue(results.contains("apple"));
-        // "application" does NOT start with "apple" - it starts with "appl"
-        // So we should only expect "apple" in the results
+        // "application" не начинается с "apple" - оно начинается с "appl"
+        // Поэтому мы должны ожидать только "apple" в результатах
         assertEquals(1, results.size());
     }
 

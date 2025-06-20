@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
+// Представляет продукт с информацией о нем
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product {
     private int id;
@@ -19,7 +21,7 @@ public class Product {
     
     private String image;
 
-    // Default constructor for Jackson
+    // Конструктор по умолчанию для Jackson
     public Product() {}
     
     public Product(int id, String name, String description, String category) {
@@ -64,7 +66,7 @@ public class Product {
         return image;
     }
     
-    // Setters for Jackson
+    // Сеттеры для Jackson
     public void setId(int id) {
         this.id = id;
     }

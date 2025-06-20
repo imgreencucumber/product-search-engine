@@ -1,15 +1,14 @@
 package service;
 
-/**
- * Provides search analytics and statistics
- */
+
+// Предоставляет статистику и аналитику поиска для отладки
+
 public class SearchAnalytics {
     private final QueryIntent queryIntent;
     private final int keywordMatches;
     private final int phraseMatches;
     private final int fuzzyMatches;
     private final int suggestions;
-    private final long searchTime;
     
     public SearchAnalytics(QueryIntent queryIntent, int keywordMatches, int phraseMatches, 
                           int fuzzyMatches, int suggestions) {
@@ -18,7 +17,6 @@ public class SearchAnalytics {
         this.phraseMatches = phraseMatches;
         this.fuzzyMatches = fuzzyMatches;
         this.suggestions = suggestions;
-        this.searchTime = System.currentTimeMillis();
     }
     
     public QueryIntent getQueryIntent() {

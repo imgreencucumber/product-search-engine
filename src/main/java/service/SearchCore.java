@@ -12,6 +12,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+// SearchCore реализует основные методы поиска по продуктам, включая поиск по ключевым словам, 
+// фразовый поиск и нечеткий (fuzzy) поиск. Он взаимодействует с инвертированным индексом, 
+// Trie-деревом и менеджером данных для эффективного поиска товаров по различным стратегиям.
+
+
 public class SearchCore {
     private InvertedIndex invertedIndex;
     private Trie trie;
@@ -45,7 +50,7 @@ public class SearchCore {
     public List<Product> fuzzySearch(String query, int maxDistance) {
         List<Product> fuzzyResults = new ArrayList<>();
         for (Product product : dataManager.getAllProducts().values()) {
-            // Check if any word in the product name or description is within the distance
+            // Проверка, есть ли какое-либо слово в имени или описании продукта
             String[] nameWords = product.getName().toLowerCase().split("\\W+");
             String[] descWords = product.getDescription().toLowerCase().split("\\W+");
             

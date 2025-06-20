@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+// Тесты для алгоритма Левенштейна
+
 public class LevenshteinDistanceTest {
 
     @Test
@@ -59,7 +61,7 @@ public class LevenshteinDistanceTest {
     @Test
     public void testComplexExample() {
         int distance = LevenshteinDistance.calculate("kitten", "sitting");
-        assertEquals(3, distance); // k->s, e->i, insert g
+        assertEquals(3, distance); // k->s, e->i, вставка g
     }
 }
 
